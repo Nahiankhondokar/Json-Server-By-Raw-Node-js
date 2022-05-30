@@ -87,6 +87,49 @@ http.createServer((req, res) => {
             "message" : "Data Added"
         }));
 
+    }else if( req.url.match(/\/api\/students\/[0-9]{1,}/) && req.method === 'PUT' || req.url.match(/\/api\/students\/[0-9]{1,}/) && req.method === 'PATCH' ){
+
+        // put, patch request
+        let id = req.url.split('/')[3];
+        if(students_obj.some(data => data.id == id)){
+
+            // update data get
+            let data = '';
+            req.on('data', (chunk) => {
+                data += chunk.toString();
+            });
+            req.on('end', () => {
+
+                let { name, skill, location } = JSON.parse(data);
+                let index = students_obj.findIndex(data => data.id == id);
+
+                students_obj[index] = {
+                    id : id,
+                    name : name,
+                    skill : skill,
+                    location : location
+                };
+              
+                writeFileSync('./data/students.json', JSON.stringify(students_obj));
+
+            });
+
+
+
+
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify({
+                "message" : "Student Updated"
+            }));
+
+            
+        }else{
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify({
+                "message" : "Student not found"
+            }));
+        }
+
     }else{
         res.writeHead(200, { 'content-type' : 'application/json' });
         res.end(JSON.stringify({
