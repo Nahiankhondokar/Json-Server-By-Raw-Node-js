@@ -26,7 +26,7 @@ http.createServer((req, res) => {
 
     }else if( req.url.match(/\/api\/students\/[0-9]{1,}/) && req.method === 'GET' ){
 
-        // single data request
+        // single data GET request
         let id = req.url.split('/')[3];
         if(students_obj.some(data => data.id == id)){
             res.writeHead(200, { 'content-type' : 'application/json' });
@@ -38,6 +38,27 @@ http.createServer((req, res) => {
             }));
         }
 
+    }else if( req.url.match(/\/api\/students\/[0-9]{1,}/) && req.method === 'DELETE' ){
+
+        // single data DELETE request
+        let id = req.url.split('/')[3];
+        if(students_obj.some(data => data.id == id)){
+
+            let del_data = students_obj.filter(data => data.id != id);
+            writeFileSync('./data/students.json', JSON.stringify(del_data));
+
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify({
+                "message" : "Student Deleted"
+            }));
+
+            
+        }else{
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify({
+                "message" : "Student not found"
+            }));
+        }
 
     }else{
         res.writeHead(200, { 'content-type' : 'application/json' });
