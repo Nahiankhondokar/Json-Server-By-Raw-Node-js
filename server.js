@@ -1,5 +1,5 @@
 import http from 'http';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import dotenv from 'dotenv';
 
 
@@ -29,13 +29,14 @@ http.createServer((req, res) => {
         // single data request
         let id = req.url.split('/')[3];
         if(students_obj.some(data => data.id == id)){
-            console.log(true);
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify(students_obj.find(data => data.id == id)));
+        }else{
+            res.writeHead(200, { 'content-type' : 'application/json' });
+            res.end(JSON.stringify({
+                "message" : "Student not found"
+            }));
         }
-        
-
-
-        res.writeHead(200, { 'content-type' : 'application/json' });
-        res.end('okay');
 
 
     }else{
