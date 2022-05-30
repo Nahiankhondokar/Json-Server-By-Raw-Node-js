@@ -1,0 +1,27 @@
+[
+    {
+        "id" : 1,
+        "name" : "nahian", 
+        "skill" : "MEARN", 
+        "location" : "Rampura"
+    },
+    {
+        "id" : 2,
+        "name" : "farid", 
+        "skill" : "Taecher", 
+        "location" : "cadpur"
+    },
+    {
+        "id" : 3,
+        "name" : "farjana", 
+        "skill" : "Housewife", 
+        "location" : "Feni"
+    },
+    {
+        "id" : 4,
+        "name" : "subrina", 
+        "skill" : "JobHolder", 
+        "location" : "Rampura"
+    }
+    
+]
