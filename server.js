@@ -1,6 +1,7 @@
 import http from 'http';
 import { readFileSync, writeFileSync } from 'fs';
 import dotenv from 'dotenv';
+import { newDataId } from './lib/functions.js';
 
 
 
@@ -59,6 +60,32 @@ http.createServer((req, res) => {
                 "message" : "Student not found"
             }));
         }
+
+    }else if( req.url === '/api/students' && req.method === 'POST' ){
+
+        // POST Request manages
+        let data = '';
+        req.on('data', (chunk) => {
+            data += chunk.toString();
+        });
+        req.on('end', () => {
+
+            let { name, skill, location } = JSON.parse(data);
+            students_obj.push({
+                id  : newDataId(students_obj),
+                name : name,
+                skill : skill,
+                location : location
+            });
+
+            writeFileSync('./data/students.json', JSON.stringify(students_obj));
+
+        });
+
+        res.writeHead(200, { 'content-type' : 'application/json' });
+        res.end(JSON.stringify({
+            "message" : "Data Added"
+        }));
 
     }else{
         res.writeHead(200, { 'content-type' : 'application/json' });
